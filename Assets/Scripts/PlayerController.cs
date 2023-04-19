@@ -56,8 +56,8 @@ void Start()
             {
                 // adjust to z level for units
                 Vector3Int mousePos = GetMousePosition();
-                
-                
+
+
                 //Debug.Log("Clicked here: " + mousePos);
                 //Debug.Log("currTargeted is " + currTargeted.name);
                 //Debug.Log("childCount is " + transform.childCount);
@@ -76,48 +76,50 @@ void Start()
 
                         charInfoPanel.gameObject.SetActive(true);
                         updateMoveTXT();
-                        break; 
-                    }
-                    // clicked in move range
-                    else if(currTargeted != null && inMovementRange(mousePos) && currTargeted.GetComponent<Character>().movLeft > 0)
-                    {
-                        Vector3 distanceTraveled = mousePos - currTargeted.transform.position;
-                        currTargeted.transform.position = mousePos;
-
-                        // Flip image based on the movement direction (if you move left sprite should face left
-                        //Debug.Log("distance traveled.x = " + distanceTraveled.x);
-                        // face left
-                        if (distanceTraveled.x < 0f)
-                        {
-                            currTargeted.transform.rotation = new Quaternion(0f, 180f, 0f, 1f);
-                        }
-                        // face right
-                        else if (distanceTraveled.x > 0f)
-                        {
-                            currTargeted.transform.rotation = new Quaternion(0f, 0f, 0f, 1f);
-                        }
-
-                        currTargeted.GetComponent<Character>().movLeft = (int)(currTargeted.GetComponent<Character>().movLeft - Mathf.Abs(distanceTraveled.x));
-                        currTargeted.GetComponent<Character>().movLeft = (int)(currTargeted.GetComponent<Character>().movLeft - Mathf.Abs(distanceTraveled.y));
-
-                        //Debug.Log("moveUsedX: " + Mathf.Abs(distanceTraveled.x));
-                        //Debug.Log("moveUsedY: " + Mathf.Abs(distanceTraveled.y));
-                        //Debug.Log("moveLeft: " + moveLeft);
-                        updateMoveTXT();
-
-                    }
-                    // clicked nothing and outside of moverange, deselect target
-                    else
-                    {
-                        if (currTargeted == null)
-                            return;
-                        currTargeted.transform.GetChild(0).gameObject.SetActive(false);
-                        //currTargeted.transform.GetChild(1).gameObject.SetActive(false);
-                        currTargeted = null;
-                        charInfoPanel.gameObject.SetActive(false);
-
+                        return;
                     }
                 }
+
+                // clicked in move range
+                if(currTargeted != null && inMovementRange(mousePos) && currTargeted.GetComponent<Character>().movLeft > 0)
+                {
+                    Vector3 distanceTraveled = mousePos - currTargeted.transform.position;
+                    currTargeted.transform.position = mousePos;
+
+                    // Flip image based on the movement direction (if you move left sprite should face left
+                    //Debug.Log("distance traveled.x = " + distanceTraveled.x);
+                    // face left
+                    if (distanceTraveled.x < 0f)
+                    {
+                        currTargeted.transform.rotation = new Quaternion(0f, 180f, 0f, 1f);
+                    }
+                    // face right
+                    else if (distanceTraveled.x > 0f)
+                    {
+                        currTargeted.transform.rotation = new Quaternion(0f, 0f, 0f, 1f);
+                    }
+
+                    currTargeted.GetComponent<Character>().movLeft = (int)(currTargeted.GetComponent<Character>().movLeft - Mathf.Abs(distanceTraveled.x));
+                    currTargeted.GetComponent<Character>().movLeft = (int)(currTargeted.GetComponent<Character>().movLeft - Mathf.Abs(distanceTraveled.y));
+
+                    //Debug.Log("moveUsedX: " + Mathf.Abs(distanceTraveled.x));
+                    //Debug.Log("moveUsedY: " + Mathf.Abs(distanceTraveled.y));
+                    //Debug.Log("moveLeft: " + moveLeft);
+                    updateMoveTXT();
+
+                }
+                // clicked nothing and outside of moverange, deselect target
+                else
+                {
+                    if (currTargeted == null)
+                        return;
+                    currTargeted.transform.GetChild(0).gameObject.SetActive(false);
+                    //currTargeted.transform.GetChild(1).gameObject.SetActive(false);
+                    currTargeted = null;
+                    charInfoPanel.gameObject.SetActive(false);
+
+                }
+                
                 
 
             }
