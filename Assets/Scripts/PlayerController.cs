@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
                         Debug.Log("Clicked unit");                                                        
                         currTargeted = playerUnits[i];
                         currTargeted.transform.GetChild(0).gameObject.SetActive(true);
-                        currTargeted.transform.GetChild(1).gameObject.SetActive(true);
+                        //currTargeted.transform.GetChild(1).gameObject.SetActive(true);
                         movementTXT.gameObject.SetActive(true);
                         updateMoveTXT();
                     }
@@ -78,6 +78,19 @@ public class PlayerController : MonoBehaviour
                     {
                         Vector3 distanceTraveled = mousePos - currTargeted.transform.position;
                         currTargeted.transform.position = mousePos;
+
+                        // Flip image based on the movement direction (if you move left sprite should face left
+                        //Debug.Log("distance traveled.x = " + distanceTraveled.x);
+                        // face left
+                        if (distanceTraveled.x < 0f)
+                        {
+                            currTargeted.transform.rotation = new Quaternion(0f, 180f, 0f, 1f);
+                        }
+                        // face right
+                        else if (distanceTraveled.x > 0f)
+                        {
+                            currTargeted.transform.rotation = new Quaternion(0f, 0f, 0f, 1f);
+                        }
 
                         moveLeft = moveLeft - Mathf.Abs(distanceTraveled.x);
                         moveLeft = moveLeft - Mathf.Abs(distanceTraveled.y);
@@ -93,7 +106,7 @@ public class PlayerController : MonoBehaviour
                         if (currTargeted == null)
                             return;
                         currTargeted.transform.GetChild(0).gameObject.SetActive(false);
-                        currTargeted.transform.GetChild(1).gameObject.SetActive(false);
+                        //currTargeted.transform.GetChild(1).gameObject.SetActive(false);
                         currTargeted = null;
                         movementTXT.gameObject.SetActive(false);
 
