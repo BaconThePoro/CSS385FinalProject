@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
     public GameObject gameController = null;
     
 
-    private GameObject[] enemyUnits;
+    public GameObject[] enemyUnits;
 
 
     public Tilemap currTilemap = null;
