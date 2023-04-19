@@ -23,11 +23,10 @@ public class PlayerController : MonoBehaviour
     private float tileY = 0;
 
     private GameObject[] playerUnits;
-
-    int moveRange = 2;
-    float moveLeft; 
-    // Start is called before the first frame update
-    void Start()
+//int moveRange = 2;
+//float moveLeft; 
+// Start is called before the first frame update
+void Start()
     {
         tileX = gameController.GetComponent<GameController>().tileX;
         tileY = gameController.GetComponent<GameController>().tileY;
@@ -39,14 +38,11 @@ public class PlayerController : MonoBehaviour
         {
             playerUnits[i] = child.gameObject;
 
-            Vector3 startPos = new Vector3(3f, -3f, 0f);
+            Vector3 startPos = new Vector3(3f, -3f + i, 0f);
             playerUnits[i].transform.position = startPos;
            
             i += 1;      
         }
-
-
-
     }
 
     // Update is called once per frame
@@ -62,20 +58,28 @@ public class PlayerController : MonoBehaviour
                 Vector3Int mousePos = GetMousePosition();
                 
                 
-                Debug.Log("Clicked here: " + mousePos);
+                //Debug.Log("Clicked here: " + mousePos);
+                //Debug.Log("currTargeted is " + currTargeted.name);
+                //Debug.Log("childCount is " + transform.childCount);
                 for (int i = 0; i < transform.childCount; i++)
                 {
                     if (mousePos == playerUnits[i].transform.position && currTargeted == null)
                     {
-                        Debug.Log("Clicked unit");                                                        
+                        Debug.Log("Clicked unit");
+                        //Debug.Log("i: " + i);
+                        //Debug.Log("playerUnit @ " + i + " is " + playerUnits[i].transform.name);
                         currTargeted = playerUnits[i];
+                        //Debug.Log("currTargeted is " + currTargeted.name);
+
                         currTargeted.transform.GetChild(0).gameObject.SetActive(true);
                         //currTargeted.transform.GetChild(1).gameObject.SetActive(true);
+
                         charInfoPanel.gameObject.SetActive(true);
                         updateMoveTXT();
+                        break; 
                     }
                     // clicked in move range
-                    else if(currTargeted != null && inMovementRange(mousePos) && moveLeft > 0)
+                    else if(currTargeted != null && inMovementRange(mousePos) && currTargeted.GetComponent<Character>().movLeft > 0)
                     {
                         Vector3 distanceTraveled = mousePos - currTargeted.transform.position;
                         currTargeted.transform.position = mousePos;
@@ -93,8 +97,9 @@ public class PlayerController : MonoBehaviour
                             currTargeted.transform.rotation = new Quaternion(0f, 0f, 0f, 1f);
                         }
 
-                        moveLeft = moveLeft - Mathf.Abs(distanceTraveled.x);
-                        moveLeft = moveLeft - Mathf.Abs(distanceTraveled.y);
+                        currTargeted.GetComponent<Character>().movLeft = (int)(currTargeted.GetComponent<Character>().movLeft - Mathf.Abs(distanceTraveled.x));
+                        currTargeted.GetComponent<Character>().movLeft = (int)(currTargeted.GetComponent<Character>().movLeft - Mathf.Abs(distanceTraveled.y));
+
                         //Debug.Log("moveUsedX: " + Mathf.Abs(distanceTraveled.x));
                         //Debug.Log("moveUsedY: " + Mathf.Abs(distanceTraveled.y));
                         //Debug.Log("moveLeft: " + moveLeft);
@@ -122,7 +127,7 @@ public class PlayerController : MonoBehaviour
     bool inMovementRange(Vector3Int mousePos)
     {
         Vector3 distanceTraveled = mousePos - currTargeted.transform.position;
-        if (Mathf.Abs(distanceTraveled.x) + Mathf.Abs(distanceTraveled.y) <= moveLeft)
+        if (Mathf.Abs(distanceTraveled.x) + Mathf.Abs(distanceTraveled.y) <= currTargeted.GetComponent<Character>().movLeft)
         {             
             return true;
         }
@@ -136,13 +141,16 @@ public class PlayerController : MonoBehaviour
         return currGrid.WorldToCell(mouseWorldPos);
     }
 
-    public void resetMove()
+    public void resetAllMove()
     {
-        moveLeft = moveRange;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            playerUnits[i].GetComponent<Character>().resetMove();
+        }
     }
 
     public void updateMoveTXT()
     {
-        charInfoPanel.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Movement: " + moveLeft;
+        charInfoPanel.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Movement: " + currTargeted.GetComponent<Character>().movLeft;
     }
 }

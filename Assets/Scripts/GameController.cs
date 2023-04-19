@@ -91,7 +91,7 @@ public class GameController : MonoBehaviour
             // if player turn
             if (currTurnMode == turnMode.PlayerTurn)
             {
-                playerController.GetComponent<PlayerController>().resetMove();
+                playerController.GetComponent<PlayerController>().resetAllMove();
                 playerController.GetComponent<PlayerController>().ourTurn = true;
 
                 // give player back their end turn button
