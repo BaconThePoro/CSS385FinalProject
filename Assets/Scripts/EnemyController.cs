@@ -32,7 +32,7 @@ public class EnemyController : MonoBehaviour
             enemyUnits[i] = child.gameObject;
           
             // enemy units go on -5
-            Vector3 startPos = new Vector3(-5f, 1f + i, 0f);
+            Vector3 startPos = new Vector3(-5f, -2f + i, 0f);
             enemyUnits[i].transform.position = startPos;
 
             i += 1;

@@ -75,7 +75,7 @@ void Start()
                         //currTargeted.transform.GetChild(1).gameObject.SetActive(true);
 
                         charInfoPanel.gameObject.SetActive(true);
-                        updateMoveTXT();
+                        updateCharInfo();
                         return;
                     }
                 }
@@ -105,7 +105,7 @@ void Start()
                     //Debug.Log("moveUsedX: " + Mathf.Abs(distanceTraveled.x));
                     //Debug.Log("moveUsedY: " + Mathf.Abs(distanceTraveled.y));
                     //Debug.Log("moveLeft: " + moveLeft);
-                    updateMoveTXT();
+                    updateCharInfo();
 
                 }
                 // clicked nothing and outside of moverange, deselect target
@@ -151,8 +151,14 @@ void Start()
         }
     }
 
-    public void updateMoveTXT()
+    public void updateCharInfo()
     {
-        charInfoPanel.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Movement: " + currTargeted.GetComponent<Character>().movLeft;
+        charInfoPanel.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Name: " + currTargeted.GetComponent<Character>().charName;
+        charInfoPanel.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = "STR: " + currTargeted.GetComponent<Character>().STR;
+        charInfoPanel.transform.GetChild(3).GetComponent<TMPro.TextMeshProUGUI>().text = "MAG: " + currTargeted.GetComponent<Character>().MAG;
+        charInfoPanel.transform.GetChild(4).GetComponent<TMPro.TextMeshProUGUI>().text = "DEF: " + currTargeted.GetComponent<Character>().DEF;
+        charInfoPanel.transform.GetChild(5).GetComponent<TMPro.TextMeshProUGUI>().text = "RES: " + currTargeted.GetComponent<Character>().RES;
+        charInfoPanel.transform.GetChild(6).GetComponent<TMPro.TextMeshProUGUI>().text = "SPD: " + currTargeted.GetComponent<Character>().SPD;
+        charInfoPanel.transform.GetChild(7).GetComponent<TMPro.TextMeshProUGUI>().text = "MOV: " + currTargeted.GetComponent<Character>().MOV + "(" + currTargeted.GetComponent<Character>().movLeft + " Left)";
     }
 }

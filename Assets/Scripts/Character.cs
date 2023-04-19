@@ -5,13 +5,13 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
 
-    public string charName;
-    public int STR;
-    public int MAG;
-    public int DEF;
-    public int RES;
-    public int SPD;
-    public int MOV; 
+    public string charName = "blankName";
+    public int STR = 1;
+    public int MAG = 1;
+    public int DEF = 1;
+    public int RES = 1;
+    public int SPD = 1;
+    public int MOV = 1; 
 
     public int movLeft;
 
@@ -23,6 +23,7 @@ public class Character : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {       
+        charName = gameObject.name;
         resetMove();
     }
 
