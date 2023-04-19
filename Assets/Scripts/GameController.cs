@@ -21,9 +21,7 @@ public class GameController : MonoBehaviour
 
     // Must be connected via unity editor
     public TMPro.TMP_Text turnModeTXT = null;
-
-    // doesnt actually need to be connected here, BUT this button does need this for its onPress
-    //public Button endTurnButton = null; 
+    public Button endTurnButton = null;
 
     // Must be connected via unity editor
     public Grid currGrid = null;
@@ -94,12 +92,19 @@ public class GameController : MonoBehaviour
             if (currTurnMode == turnMode.PlayerTurn)
             {
                 playerController.GetComponent<PlayerController>().resetMove();
-                playerController.GetComponent<PlayerController>().ourTurn = true; 
+                playerController.GetComponent<PlayerController>().ourTurn = true;
+
+                // give player back their end turn button
+                endTurnButton.gameObject.SetActive(true);
             }
             // if enemy turn
             else
             {
                 playerController.GetComponent<PlayerController>().ourTurn = false;
+
+                // turn off end turn button for player since it isnt their turn
+                endTurnButton.gameObject.SetActive(false);
+
                 enemyController.GetComponent<EnemyController>().enemyTurn();
             }
         }

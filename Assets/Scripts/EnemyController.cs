@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
+    // must be connected via unity editor
     public GameObject gameController = null;
+    
 
     private GameObject[] enemyUnits;
 
@@ -44,7 +47,7 @@ public class EnemyController : MonoBehaviour
 
     public void enemyTurn()
     {
-        Debug.Log("Enemy Turn start");
+        Debug.Log("Enemy Turn start");            
         // do stuff
         //
         //

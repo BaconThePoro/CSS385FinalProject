@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     // Must be connected via unity editor
     public GameObject gameController = null;
     private GameObject currTargeted = null;
-    public TMPro.TMP_Text movementTXT = null;
+    public GameObject charInfoPanel = null;
 
     public bool ourTurn = false;
 
@@ -70,7 +71,7 @@ public class PlayerController : MonoBehaviour
                         currTargeted = playerUnits[i];
                         currTargeted.transform.GetChild(0).gameObject.SetActive(true);
                         //currTargeted.transform.GetChild(1).gameObject.SetActive(true);
-                        movementTXT.gameObject.SetActive(true);
+                        charInfoPanel.gameObject.SetActive(true);
                         updateMoveTXT();
                     }
                     // clicked in move range
@@ -108,7 +109,7 @@ public class PlayerController : MonoBehaviour
                         currTargeted.transform.GetChild(0).gameObject.SetActive(false);
                         //currTargeted.transform.GetChild(1).gameObject.SetActive(false);
                         currTargeted = null;
-                        movementTXT.gameObject.SetActive(false);
+                        charInfoPanel.gameObject.SetActive(false);
 
                     }
                 }
@@ -142,6 +143,6 @@ public class PlayerController : MonoBehaviour
 
     public void updateMoveTXT()
     {
-        movementTXT.text = "Movement: " + moveLeft;
+        charInfoPanel.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Movement: " + moveLeft;
     }
 }
