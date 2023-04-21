@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         {
             playerUnits[i] = child.gameObject;
 
-            Vector3 startPos = new Vector3(3f, -3f + i, 0f);
+            Vector3 startPos = new Vector3(3f, -3f + i, -1f);
             playerUnits[i].transform.position = startPos;
            
             i += 1;      
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
             {
                 // adjust to z level for units
                 Vector3Int mousePos = GetMousePosition();
-
+                mousePos = new Vector3Int(mousePos.x, mousePos.y, -1);
 
                 //Debug.Log("Clicked here: " + mousePos);
                 //Debug.Log("currTargeted is " + currTargeted.name);
