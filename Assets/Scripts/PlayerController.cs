@@ -84,11 +84,17 @@ public class PlayerController : MonoBehaviour
                     }
                     else if (mousePos == enemyController.enemyUnits[i].transform.position)
                     {
-                        // target ally
+                        // no ally selected target enemy
                         if (currTargeted == null)
                         {
                             targetEnemy(i);
                         }
+                        // ally selected and in range, attack
+                        else if (currTargeted != null && inMovementRange(mousePos))
+                        {
+                            Debug.Log("battle time");
+                        }
+                        // ally selected but not in range, reselect enemy instead
                         else
                         {
                             deselectTarget();
