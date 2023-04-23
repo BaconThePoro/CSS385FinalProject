@@ -119,6 +119,10 @@ public class PlayerController : MonoBehaviour
                                 }
 
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
+
+                                // small delay before beginning battle so user can see character move
+                                StartCoroutine(waitBattle(i));
+                                return;
                             }
                             // to far vertically
                             else if (Mathf.Abs(distanceFrom.y) > 1)
@@ -133,6 +137,10 @@ public class PlayerController : MonoBehaviour
                                 distanceFrom = distanceFrom - temp;
                                 //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
+
+                                // small delay before beginning battle so user can see character move
+                                StartCoroutine(waitBattle(i));
+                                return;
                             }
                             // to far diagonally
                             else if (Mathf.Abs(distanceFrom.x) == 1 && Mathf.Abs(distanceFrom.y) == 1)
@@ -157,16 +165,13 @@ public class PlayerController : MonoBehaviour
                                 }
 
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
+
+                                // small delay before beginning battle so user can see character move
+                                StartCoroutine(waitBattle(i));
+                                return;
                             }
 
-                            Debug.Log("battle time");
-                            ourTurn = false; 
-
-                            // can only fight once per turn, reduce movement to 0
-                            currTargeted.GetComponent<Character>().movLeft = 0;                          
-
-                            gameController.GetComponent<GameController>().changeMode(GameController.gameMode.BattleMode);
-                            gameController.GetComponent<GameController>().startBattle(currTargeted, enemyController.enemyUnits[i], true);
+                            beginBattle(i);
                         }
                         // ally selected but not in range, reselect enemy instead
                         else
@@ -188,12 +193,27 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     deselectTarget();
-                }
-                
-                
-
+                }                            
             }
         }
+    }
+
+    void beginBattle(int i)
+    {
+        Debug.Log("battle time");
+        ourTurn = false;
+
+        // can only fight once per turn, reduce movement to 0
+        currTargeted.GetComponent<Character>().movLeft = 0;
+
+        gameController.GetComponent<GameController>().changeMode(GameController.gameMode.BattleMode);
+        gameController.GetComponent<GameController>().startBattle(currTargeted, enemyController.enemyUnits[i], true);
+    }
+
+    IEnumerator waitBattle(int i)
+    {
+        yield return new WaitForSeconds(0.5f);
+        beginBattle(i);
     }
 
     bool allyHere(Vector3Int pos)
