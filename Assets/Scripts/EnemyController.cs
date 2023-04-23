@@ -64,4 +64,20 @@ public class EnemyController : MonoBehaviour
         gameController.GetComponent<GameController>().changeTurn(GameController.turnMode.PlayerTurn);
         Debug.Log("Enemy turn end");
     }
+
+    public void deactivateChildren()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            enemyUnits[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void activateChildren()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            enemyUnits[i].gameObject.SetActive(true);
+        }
+    }
 }

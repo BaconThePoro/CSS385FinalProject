@@ -10,7 +10,9 @@ public class GameController : MonoBehaviour
     // we need a pointer to both Player and Enemy controller. Must be connected via unity editor. 
     public GameObject playerController = null;
     public GameObject enemyController = null;
-    public GameObject mainCamera = null; 
+    public GameObject mainCamera = null;
+    public GameObject Mapmode = null;
+    public GameObject Battlemod = null; 
 
     // enum for whose turn it is currently, the players or the enemies.
     public enum turnMode { PlayerTurn, EnemyTurn };
@@ -21,6 +23,7 @@ public class GameController : MonoBehaviour
     private gameMode currGameMode;
 
     // Must be connected via unity editor
+    public GameObject turnPanel = null;
     public TMPro.TMP_Text turnModeTXT = null;
     public Button endTurnButton = null;
 
@@ -31,6 +34,14 @@ public class GameController : MonoBehaviour
 
     // defaulted to this so the hover doesnt overwrite an existing tile on first deselection
     private Vector3Int previousMousePos = new Vector3Int(0, 0, -999);
+
+    // stuff for battlemode
+    private Vector3 leftBattlePos = new Vector3(-2, 0, -1);
+    private Vector3 rightBattlePos = new Vector3(2, 0, -1);
+    private Vector3 camBattlePos = new Vector3(0, 0.5f, -50);
+    private float camBattleSize = 2;
+    private Quaternion leftBattleQua = new Quaternion();
+    private Quaternion rightBattleQua = new Quaternion(0, 180, 0, 1);
 
     // set these ones 
     public float tileX = 1;
@@ -91,8 +102,70 @@ public class GameController : MonoBehaviour
                 currTilemap.SetTile(mousePosZHover, hoverTile);
                 previousMousePos = mousePos;
             }
-
         }
+    }
+
+    public void battle(GameObject leftChar, GameObject rightChar)
+    {
+        Debug.Log("starting battle");
+
+
+        // go to battlemode
+        turnPanel.SetActive(false);
+        playerController.GetComponent<PlayerController>().deselectTarget();
+        playerController.GetComponent<PlayerController>().deactivateChildren();
+        enemyController.GetComponent<EnemyController>().deactivateChildren();
+        Mapmode.SetActive(false);
+        Battlemod.SetActive(true);
+        float savedCamSize = mainCamera.GetComponent<Camera>().orthographicSize;
+        mainCamera.GetComponent<Camera>().orthographicSize = camBattleSize;
+        //
+
+        // reactivate participants
+        leftChar.SetActive(true);
+        rightChar.SetActive(true);
+
+        // save position and rotation for both participants (and camera) before we move them
+        Vector3 savedPosLeft = leftChar.transform.position;
+        Vector3 savedPosRight = rightChar.transform.position;
+        Vector3 savedPosCam = mainCamera.transform.position;
+        Quaternion savedQuaLeft = leftChar.transform.rotation;
+        Quaternion savedQuaRight = rightChar.transform.rotation;
+        //
+
+        // move both participants (and camera) to position for battle
+        leftChar.transform.position = leftBattlePos;
+        rightChar.transform.position = rightBattlePos;
+        mainCamera.transform.position = camBattlePos;
+        leftChar.transform.rotation = leftBattleQua;
+        rightChar.transform.rotation = rightBattleQua;
+        //
+
+        StartCoroutine(attackAnimation());
+
+
+        // return them to prior positions
+        leftChar.transform.position = savedPosLeft;
+        rightChar.transform.position = savedPosRight;
+        mainCamera.transform.position = savedPosCam;
+        mainCamera.GetComponent<Camera>().orthographicSize = savedCamSize;
+        leftChar.transform.rotation = savedQuaLeft;
+        rightChar.transform.rotation = savedQuaRight;
+        //
+
+        // return to mapmode
+        turnPanel.SetActive(true);
+        playerController.GetComponent<PlayerController>().activateChildren();
+        enemyController.GetComponent<EnemyController>().activateChildren();
+        Mapmode.SetActive(true);
+        Battlemod.SetActive(false);
+        changeMode(gameMode.MapMode);
+        //
+    }
+
+    IEnumerator attackAnimation()
+    {
+        yield return new WaitForSeconds(1);
     }
 
     // for hovering effect

@@ -125,13 +125,13 @@ public class PlayerController : MonoBehaviour
                             }
 
                             Debug.Log("battle time");
+                            ourTurn = false; 
 
-                            // do battle stuff
-                            //
-                            //
+                            // can only fight once per turn, reduce movement to 0
+                            currTargeted.GetComponent<Character>().movLeft = 0;                          
 
-                            // finished fighting this turn, reduce movement to 0
-                            currTargeted.GetComponent<Character>().movLeft = 0;
+                            gameController.GetComponent<GameController>().changeMode(GameController.gameMode.BattleMode);
+                            gameController.GetComponent<GameController>().battle(currTargeted, enemyController.enemyUnits[i]);
                         }
                         // ally selected but not in range, reselect enemy instead
                         else
@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour
         updateCharInfo();
     }
 
-    void deselectTarget()
+    public void deselectTarget()
     {
         if (currTargeted == null)
             return;
@@ -272,6 +272,21 @@ public class PlayerController : MonoBehaviour
         else
             charInfoPanel.transform.GetChild(14).GetComponent<TMPro.TextMeshProUGUI>().text = ""
                 + currTargeted.GetComponent<Character>().MOV;
+    }
 
+    public void deactivateChildren()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            playerUnits[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void activateChildren()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            playerUnits[i].gameObject.SetActive(true);
+        }
     }
 }
