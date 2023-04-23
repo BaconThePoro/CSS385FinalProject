@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     // we need a pointer to both Player and Enemy controller. Must be connected via unity editor. 
     public GameObject playerController = null;
     public GameObject enemyController = null;
+    public GameObject mainCamera = null; 
 
     // enum for whose turn it is currently, the players or the enemies.
     public enum turnMode { PlayerTurn, EnemyTurn };
@@ -35,6 +36,11 @@ public class GameController : MonoBehaviour
     public float tileX = 1;
     public float tileY = 1;
 
+    // world limit is limit camera should be movable
+    float worldLimX = 10f;
+    float worldLimY = 5f;
+    float camMoveAmount = 0.05f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +56,26 @@ public class GameController : MonoBehaviour
         // Map mode only
         if (currGameMode == gameMode.MapMode)
         {
+            // camera move up
+            if (Input.GetKey(KeyCode.W) && mainCamera.transform.position.y < worldLimY)
+            {
+                mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y + camMoveAmount, mainCamera.transform.position.z); 
+            }
+            // camera move down
+            if (Input.GetKey(KeyCode.S) && mainCamera.transform.position.y > -worldLimY)
+            {
+                mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - camMoveAmount, mainCamera.transform.position.z);
+            }
+            // camera move left
+            if (Input.GetKey(KeyCode.A) && mainCamera.transform.position.x > -worldLimX)
+            {
+                mainCamera.transform.position = new Vector3(mainCamera.transform.position.x - camMoveAmount, mainCamera.transform.position.y, mainCamera.transform.position.z);
+            }
+            // camera move right
+            if (Input.GetKey(KeyCode.D) && mainCamera.transform.position.x < worldLimX)
+            {
+                mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + camMoveAmount, mainCamera.transform.position.y, mainCamera.transform.position.z);
+            }
 
             // mouse hover over effect
             Vector3Int mousePos = GetMousePosition();
