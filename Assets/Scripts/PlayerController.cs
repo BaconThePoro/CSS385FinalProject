@@ -90,9 +90,48 @@ public class PlayerController : MonoBehaviour
                             targetEnemy(i);
                         }
                         // ally selected and in range, attack
-                        else if (currTargeted != null && inMovementRange(mousePos))
-                        {
+                        else if (currTargeted != null && isTargetEnemy == false && inMovementRange(mousePos))
+                        {                          
+                            // if you clicked an enemy but arent next to them yet, then move next to them
+                            Vector3Int distanceFrom = mousePos - Vector3Int.FloorToInt(currTargeted.transform.position);
+                            //Debug.Log("initial distanceFrom = " + distanceFrom);
+
+                            if (Mathf.Abs(distanceFrom.x) > 1)
+                            {                               
+                                Vector3Int temp;
+
+                                if (distanceFrom.x < 0) // if the distance is negative
+                                    temp = new Vector3Int(-1, 0, 0);
+                                else // its positive
+                                    temp = new Vector3Int(1, 0, 0);
+
+                                distanceFrom = distanceFrom - temp;
+                                //Debug.Log("new distanceFrom = " + distanceFrom);
+                                //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+                                moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
+                            }
+                            if (Mathf.Abs(distanceFrom.y) > 1)
+                            {
+                                Vector3Int temp;
+                               
+                                if (distanceFrom.y < 0) // if the distance is negative
+                                    temp = new Vector3Int(0, -1, 0);
+                                else // its positive
+                                    temp = new Vector3Int(0, 1, 0);
+
+                                distanceFrom = distanceFrom - temp;
+                                //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+                                moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
+                            }
+
                             Debug.Log("battle time");
+
+                            // do battle stuff
+                            //
+                            //
+
+                            // finished fighting this turn, reduce movement to 0
+                            currTargeted.GetComponent<Character>().movLeft = 0;
                         }
                         // ally selected but not in range, reselect enemy instead
                         else
