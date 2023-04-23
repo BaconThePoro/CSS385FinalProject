@@ -42,6 +42,14 @@ public class GameController : MonoBehaviour
     private float camBattleSize = 2;
     private Quaternion leftBattleQua = new Quaternion();
     private Quaternion rightBattleQua = new Quaternion(0, 180, 0, 1);
+    private Vector3 savedPosLeft;
+    private Vector3 savedPosRight;
+    private Vector3 savedPosCam;
+    private Quaternion savedQuaLeft;
+    private Quaternion savedQuaRight;
+    private float savedCamSize;
+    //
+
 
     // set these ones 
     public float tileX = 1;
@@ -106,10 +114,9 @@ public class GameController : MonoBehaviour
     }
 
     // turn true = player turn, turn false = enemy turn
-    public void battle(GameObject leftChar, GameObject rightChar, bool turn)
+    public void startBattle(GameObject leftChar, GameObject rightChar, bool turn)
     {
         Debug.Log("starting battle");
-
 
         // go to battlemode
         turnPanel.SetActive(false);
@@ -118,7 +125,7 @@ public class GameController : MonoBehaviour
         enemyController.GetComponent<EnemyController>().deactivateChildren();
         Mapmode.SetActive(false);
         Battlemod.SetActive(true);
-        float savedCamSize = mainCamera.GetComponent<Camera>().orthographicSize;
+        savedCamSize = mainCamera.GetComponent<Camera>().orthographicSize;
         mainCamera.GetComponent<Camera>().orthographicSize = camBattleSize;
         //
 
@@ -127,11 +134,11 @@ public class GameController : MonoBehaviour
         rightChar.SetActive(true);
 
         // save position and rotation for both participants (and camera) before we move them
-        Vector3 savedPosLeft = leftChar.transform.position;
-        Vector3 savedPosRight = rightChar.transform.position;
-        Vector3 savedPosCam = mainCamera.transform.position;
-        Quaternion savedQuaLeft = leftChar.transform.rotation;
-        Quaternion savedQuaRight = rightChar.transform.rotation;
+        savedPosLeft = leftChar.transform.position;
+        savedPosRight = rightChar.transform.position;
+        savedPosCam = mainCamera.transform.position;
+        savedQuaLeft = leftChar.transform.rotation;
+        savedQuaRight = rightChar.transform.rotation;
         //
 
         // move both participants (and camera) to position for battle
@@ -142,9 +149,25 @@ public class GameController : MonoBehaviour
         rightChar.transform.rotation = rightBattleQua;
         //
 
-        StartCoroutine(attackAnimation());
 
+        // do battle stuff like animations and damage
+        //
+        //
 
+        // this is only here to stall while battle doesnt do anything
+        StartCoroutine(waitCoroutine(leftChar, rightChar, turn));
+    }
+
+    // this is only here to stall while battle doesnt do anything
+    IEnumerator waitCoroutine(GameObject leftChar, GameObject rightChar, bool turn)
+    {
+        yield return new WaitForSeconds(3);
+        endBattle(leftChar, rightChar, turn);
+    }
+
+    // turn true = player turn, turn false = enemy turn
+    public void endBattle(GameObject leftChar, GameObject rightChar, bool turn)
+    {
         // return them to prior positions
         leftChar.transform.position = savedPosLeft;
         rightChar.transform.position = savedPosRight;
@@ -168,11 +191,6 @@ public class GameController : MonoBehaviour
             playerController.GetComponent<PlayerController>().ourTurn = true;
         else
             playerController.GetComponent<PlayerController>().ourTurn = false;
-    }
-
-    IEnumerator attackAnimation()
-    {
-        yield return new WaitForSeconds(1f);
     }
 
     // for hovering effect

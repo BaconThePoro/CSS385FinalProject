@@ -94,8 +94,9 @@ public class PlayerController : MonoBehaviour
                         {                          
                             // if you clicked an enemy but arent next to them yet, then move next to them
                             Vector3Int distanceFrom = mousePos - Vector3Int.FloorToInt(currTargeted.transform.position);
-                            //Debug.Log("initial distanceFrom = " + distanceFrom);
+                            Debug.Log("initial distanceFrom = " + distanceFrom);
 
+                            // to far horizontally
                             if (Mathf.Abs(distanceFrom.x) > 1)
                             {                               
                                 Vector3Int temp;
@@ -107,10 +108,11 @@ public class PlayerController : MonoBehaviour
 
                                 distanceFrom = distanceFrom - temp;
                                 //Debug.Log("new distanceFrom = " + distanceFrom);
-                                //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+                                Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
                             }
-                            if (Mathf.Abs(distanceFrom.y) > 1)
+                            // to far vertically
+                            else if (Mathf.Abs(distanceFrom.y) > 1)
                             {
                                 Vector3Int temp;
                                
@@ -120,7 +122,22 @@ public class PlayerController : MonoBehaviour
                                     temp = new Vector3Int(0, 1, 0);
 
                                 distanceFrom = distanceFrom - temp;
-                                //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+                                Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+                                moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
+                            }
+                            // to far diagonally
+                            else if (Mathf.Abs(distanceFrom.x) == 1 && Mathf.Abs(distanceFrom.y) == 1)
+                            {
+                                // just copies the vertical movement stuff
+                                Vector3Int temp;
+
+                                if (distanceFrom.y < 0) // if the distance is negative
+                                    temp = new Vector3Int(0, -1, 0);
+                                else // its positive
+                                    temp = new Vector3Int(0, 1, 0);
+
+                                distanceFrom = distanceFrom - temp;
+                                Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
                             }
 
@@ -131,7 +148,7 @@ public class PlayerController : MonoBehaviour
                             currTargeted.GetComponent<Character>().movLeft = 0;                          
 
                             gameController.GetComponent<GameController>().changeMode(GameController.gameMode.BattleMode);
-                            gameController.GetComponent<GameController>().battle(currTargeted, enemyController.enemyUnits[i], true);
+                            gameController.GetComponent<GameController>().startBattle(currTargeted, enemyController.enemyUnits[i], true);
                         }
                         // ally selected but not in range, reselect enemy instead
                         else
