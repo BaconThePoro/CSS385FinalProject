@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
                         {                          
                             // if you clicked an enemy but arent next to them yet, then move next to them
                             Vector3Int distanceFrom = mousePos - Vector3Int.FloorToInt(currTargeted.transform.position);
-                            Debug.Log("initial distanceFrom = " + distanceFrom);
+                            //Debug.Log("initial distanceFrom = " + distanceFrom);
 
                             // to far horizontally
                             if (Mathf.Abs(distanceFrom.x) > 1)
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
                                 //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
 
                                 // if theres an ally already in the space your moving to
-                                if (allyHere(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom))
+                                if (unitHere(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom))
                                 {
                                     deselectTarget();
                                     targetEnemy(i);
@@ -136,6 +136,15 @@ public class PlayerController : MonoBehaviour
 
                                 distanceFrom = distanceFrom - temp;
                                 //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+
+                                // if theres an ally already in the space your moving to
+                                if (unitHere(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom))
+                                {
+                                    deselectTarget();
+                                    targetEnemy(i);
+                                    return;
+                                }
+
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
 
                                 // small delay before beginning battle so user can see character move
@@ -157,7 +166,7 @@ public class PlayerController : MonoBehaviour
                                 //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
 
                                 // if theres an ally already in the space your moving to
-                                if (allyHere(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom))
+                                if (unitHere(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom))
                                 {
                                     deselectTarget();
                                     targetEnemy(i);
@@ -200,7 +209,7 @@ public class PlayerController : MonoBehaviour
 
     void beginBattle(int i)
     {
-        Debug.Log("battle time");
+        //Debug.Log("battle time");
         ourTurn = false;
 
         // can only fight once per turn, reduce movement to 0
@@ -216,7 +225,7 @@ public class PlayerController : MonoBehaviour
         beginBattle(i);
     }
 
-    bool allyHere(Vector3Int pos)
+    bool unitHere(Vector3Int pos)
     {
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -226,11 +235,17 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (enemyController.GetComponent<EnemyController>().enemyHere(pos))
+        {
+            return true;
+        }
+
         return false; 
     }
+
     void targetAlly(int i)
     {
-        Debug.Log("Clicked ally");
+        //Debug.Log("Clicked ally");
         //Debug.Log("i: " + i);
         //Debug.Log("playerUnit @ " + i + " is " + playerUnits[i].transform.name);
         currTargeted = playerUnits[i];

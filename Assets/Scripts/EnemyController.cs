@@ -58,6 +58,19 @@ public class EnemyController : MonoBehaviour
         StartCoroutine(waitCoroutine());
     }
 
+    public bool enemyHere(Vector3Int pos)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (enemyUnits[i].transform.position == pos)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     IEnumerator waitCoroutine()
     {
         yield return new WaitForSeconds(1);
