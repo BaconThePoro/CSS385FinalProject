@@ -109,6 +109,15 @@ public class PlayerController : MonoBehaviour
                                 distanceFrom = distanceFrom - temp;
                                 //Debug.Log("new distanceFrom = " + distanceFrom);
                                 //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+
+                                // if theres an ally already in the space your moving to
+                                if (allyHere(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom))
+                                {
+                                    deselectTarget();
+                                    targetEnemy(i);
+                                    return;
+                                }
+
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
                             }
                             // to far vertically
@@ -138,6 +147,15 @@ public class PlayerController : MonoBehaviour
 
                                 distanceFrom = distanceFrom - temp;
                                 //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+
+                                // if theres an ally already in the space your moving to
+                                if (allyHere(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom))
+                                {
+                                    deselectTarget();
+                                    targetEnemy(i);
+                                    return;
+                                }
+
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
                             }
 
@@ -178,6 +196,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    bool allyHere(Vector3Int pos)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (playerUnits[i].transform.position == pos)
+            {
+                return true;
+            }
+        }
+
+        return false; 
+    }
     void targetAlly(int i)
     {
         Debug.Log("Clicked ally");
