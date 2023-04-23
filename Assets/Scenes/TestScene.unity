@@ -1108,7 +1108,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!45 &519420033
 Skybox:
@@ -2233,7 +2233,7 @@ RectTransform:
   - {fileID: 17159738}
   - {fileID: 839432105}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2502,7 +2502,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1096422116
 GameObject:
@@ -3279,6 +3279,7 @@ GameObject:
   - component: {fileID: 1737337939}
   - component: {fileID: 1737337940}
   - component: {fileID: 1737337941}
+  - component: {fileID: 1737337942}
   m_Layer: 0
   m_Name: SpringGuy
   m_TagString: Untagged
@@ -3373,8 +3374,23 @@ MonoBehaviour:
   DEF: 1
   RES: 1
   SPD: 1
-  MOV: 2
+  MOV: 3
   movLeft: 0
+--- !u!111 &1737337942
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737337938}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1744128634
 GameObject:
   m_ObjectHideFlags: 0
@@ -4592,7 +4608,7 @@ MonoBehaviour:
   DEF: 1
   RES: 1
   SPD: 1
-  MOV: 3
+  MOV: 5
   movLeft: 0
 --- !u!1 &2123449131
 GameObject:
