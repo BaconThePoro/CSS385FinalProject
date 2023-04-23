@@ -105,7 +105,8 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void battle(GameObject leftChar, GameObject rightChar)
+    // turn true = player turn, turn false = enemy turn
+    public void battle(GameObject leftChar, GameObject rightChar, bool turn)
     {
         Debug.Log("starting battle");
 
@@ -161,11 +162,17 @@ public class GameController : MonoBehaviour
         Battlemod.SetActive(false);
         changeMode(gameMode.MapMode);
         //
+
+        // return to either player or enemy turn
+        if (turn == true)
+            playerController.GetComponent<PlayerController>().ourTurn = true;
+        else
+            playerController.GetComponent<PlayerController>().ourTurn = false;
     }
 
     IEnumerator attackAnimation()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1f);
     }
 
     // for hovering effect

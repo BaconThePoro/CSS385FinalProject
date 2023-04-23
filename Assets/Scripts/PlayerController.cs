@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
                             currTargeted.GetComponent<Character>().movLeft = 0;                          
 
                             gameController.GetComponent<GameController>().changeMode(GameController.gameMode.BattleMode);
-                            gameController.GetComponent<GameController>().battle(currTargeted, enemyController.enemyUnits[i]);
+                            gameController.GetComponent<GameController>().battle(currTargeted, enemyController.enemyUnits[i], true);
                         }
                         // ally selected but not in range, reselect enemy instead
                         else
