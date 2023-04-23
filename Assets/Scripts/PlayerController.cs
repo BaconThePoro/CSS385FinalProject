@@ -258,17 +258,19 @@ public class PlayerController : MonoBehaviour
     public void updateCharInfo()
     {
         charInfoPanel.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Name: " + currTargeted.GetComponent<Character>().charName;
-        charInfoPanel.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = "STR: " + currTargeted.GetComponent<Character>().STR;
-        charInfoPanel.transform.GetChild(3).GetComponent<TMPro.TextMeshProUGUI>().text = "MAG: " + currTargeted.GetComponent<Character>().MAG;
-        charInfoPanel.transform.GetChild(4).GetComponent<TMPro.TextMeshProUGUI>().text = "DEF: " + currTargeted.GetComponent<Character>().DEF;
-        charInfoPanel.transform.GetChild(5).GetComponent<TMPro.TextMeshProUGUI>().text = "RES: " + currTargeted.GetComponent<Character>().RES;
-        charInfoPanel.transform.GetChild(6).GetComponent<TMPro.TextMeshProUGUI>().text = "SPD: " + currTargeted.GetComponent<Character>().SPD;
+        charInfoPanel.transform.GetChild(9).GetComponent<TMPro.TextMeshProUGUI>().text = "" + currTargeted.GetComponent<Character>().STR;
+        charInfoPanel.transform.GetChild(10).GetComponent<TMPro.TextMeshProUGUI>().text = "" + currTargeted.GetComponent<Character>().MAG;
+        charInfoPanel.transform.GetChild(11).GetComponent<TMPro.TextMeshProUGUI>().text = "" + currTargeted.GetComponent<Character>().DEF;
+        charInfoPanel.transform.GetChild(12).GetComponent<TMPro.TextMeshProUGUI>().text = "" + currTargeted.GetComponent<Character>().RES;
+        charInfoPanel.transform.GetChild(13).GetComponent<TMPro.TextMeshProUGUI>().text = "" + currTargeted.GetComponent<Character>().SPD;
 
         if (isTargetEnemy == false)
-            charInfoPanel.transform.GetChild(7).GetComponent<TMPro.TextMeshProUGUI>().text = "MOV: " 
-                + currTargeted.GetComponent<Character>().MOV + "(" + currTargeted.GetComponent<Character>().movLeft + " Left)";
+        {
+            charInfoPanel.transform.GetChild(14).GetComponent<TMPro.TextMeshProUGUI>().text = "" + currTargeted.GetComponent<Character>().MOV;
+            charInfoPanel.transform.GetChild(15).GetComponent<TMPro.TextMeshProUGUI>().text = "" + currTargeted.GetComponent<Character>().movLeft;
+        }
         else
-            charInfoPanel.transform.GetChild(7).GetComponent<TMPro.TextMeshProUGUI>().text = "MOV: "
+            charInfoPanel.transform.GetChild(14).GetComponent<TMPro.TextMeshProUGUI>().text = ""
                 + currTargeted.GetComponent<Character>().MOV;
 
     }
