@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
 
                                 distanceFrom = distanceFrom - temp;
                                 //Debug.Log("new distanceFrom = " + distanceFrom);
-                                Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+                                //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
                             }
                             // to far vertically
@@ -122,7 +122,7 @@ public class PlayerController : MonoBehaviour
                                     temp = new Vector3Int(0, 1, 0);
 
                                 distanceFrom = distanceFrom - temp;
-                                Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+                                //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
                             }
                             // to far diagonally
@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour
                                     temp = new Vector3Int(0, 1, 0);
 
                                 distanceFrom = distanceFrom - temp;
-                                Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+                                //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
                                 moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
                             }
 
@@ -285,10 +285,16 @@ public class PlayerController : MonoBehaviour
         {
             charInfoPanel.transform.GetChild(14).GetComponent<TMPro.TextMeshProUGUI>().text = "" + currTargeted.GetComponent<Character>().MOV;
             charInfoPanel.transform.GetChild(15).GetComponent<TMPro.TextMeshProUGUI>().text = "" + currTargeted.GetComponent<Character>().movLeft;
+            charInfoPanel.transform.GetChild(8).gameObject.SetActive(true);
+            charInfoPanel.transform.GetChild(15).gameObject.SetActive(true);
         }
         else
+        {
             charInfoPanel.transform.GetChild(14).GetComponent<TMPro.TextMeshProUGUI>().text = ""
                 + currTargeted.GetComponent<Character>().MOV;
+            charInfoPanel.transform.GetChild(8).gameObject.SetActive(false);
+            charInfoPanel.transform.GetChild(15).gameObject.SetActive(false);
+        }
     }
 
     public void deactivateChildren()
