@@ -96,8 +96,51 @@ public class PlayerController : MonoBehaviour
                             Vector3Int distanceFrom = mousePos - Vector3Int.FloorToInt(currTargeted.transform.position);
                             //Debug.Log("initial distanceFrom = " + distanceFrom);
 
+                            // to far diagonally
+                            if (Mathf.Abs(distanceFrom.x) >= 1 && Mathf.Abs(distanceFrom.y) >= 1)
+                            {
+                                // just copies the vertical movement stuff
+                                Vector3Int temp;
+
+                                if (distanceFrom.y < 0) // if the distance is negative
+                                    temp = new Vector3Int(0, -1, 0);
+                                else // its positive
+                                    temp = new Vector3Int(0, 1, 0);
+
+                                distanceFrom = distanceFrom - temp;
+                                Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+
+                                // if theres an ally already in the space your moving to
+                                if (unitHere(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom))
+                                { // try move horizontally
+
+                                    distanceFrom = distanceFrom + temp;
+                                    if (distanceFrom.x < 0) // if the distance is negative
+                                        temp = new Vector3Int(-1, 0, 0);
+                                    else // its positive
+                                        temp = new Vector3Int(1, 0, 0);
+
+                                    distanceFrom = distanceFrom - temp;
+                                    Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
+
+                                    // both sides occupied just cant attack
+                                    if (unitHere(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom))
+                                    {
+                                        deselectTarget();
+                                        targetEnemy(i);
+                                        return;
+                                    }
+                                }
+
+                                moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
+
+                                // small delay before beginning battle so user can see character move
+                                StartCoroutine(waitBattle(i));
+                                return;
+                            }
+
                             // to far horizontally
-                            if (Mathf.Abs(distanceFrom.x) > 1)
+                            else if (Mathf.Abs(distanceFrom.x) > 1)
                             {                               
                                 Vector3Int temp;
 
@@ -129,34 +172,6 @@ public class PlayerController : MonoBehaviour
                             {
                                 Vector3Int temp;
                                
-                                if (distanceFrom.y < 0) // if the distance is negative
-                                    temp = new Vector3Int(0, -1, 0);
-                                else // its positive
-                                    temp = new Vector3Int(0, 1, 0);
-
-                                distanceFrom = distanceFrom - temp;
-                                //Debug.Log("Initiated combat within mov range but not adjacent. Moving: " + distanceFrom);
-
-                                // if theres an ally already in the space your moving to
-                                if (unitHere(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom))
-                                {
-                                    deselectTarget();
-                                    targetEnemy(i);
-                                    return;
-                                }
-
-                                moveAlly(Vector3Int.FloorToInt(currTargeted.transform.position) + distanceFrom);
-
-                                // small delay before beginning battle so user can see character move
-                                StartCoroutine(waitBattle(i));
-                                return;
-                            }
-                            // to far diagonally
-                            else if (Mathf.Abs(distanceFrom.x) == 1 && Mathf.Abs(distanceFrom.y) == 1)
-                            {
-                                // just copies the vertical movement stuff
-                                Vector3Int temp;
-
                                 if (distanceFrom.y < 0) // if the distance is negative
                                     temp = new Vector3Int(0, -1, 0);
                                 else // its positive
